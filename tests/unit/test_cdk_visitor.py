@@ -17,7 +17,6 @@ def stack() -> DummyStack:
     app = core.App()
     _stack = DummyStack(app, "test", filename="tests/unit/farm.yaml")
     return _stack
-    
 
 
 def test_root(stack):

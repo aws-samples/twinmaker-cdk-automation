@@ -4,13 +4,16 @@
 import pytest
 from wind_farm.wind_farm import TurbineGroup, WindFarm
 
+
 @pytest.fixture()
 def farm():
     return WindFarm.load_from_yaml("tests/unit/farm.yaml", WindFarm)
 
+
 def test_can_read_farm_file(farm):
     assert farm.name == "ACME WindFarm"
     assert len(farm.items) == 2
+
 
 def test_farm_has_turbine_groups(farm):
     group = farm.items[0]
@@ -18,10 +21,12 @@ def test_farm_has_turbine_groups(farm):
     assert group.shape == "rectangle"
     assert group.width == 2
 
+
 def test_turbinegroup_has_parent(farm):
     group = farm.items[0]
     assert group.parent is not None
     assert group.parent == farm
+
 
 def test_farm_has_turbine(farm):
     group = farm.items[0]

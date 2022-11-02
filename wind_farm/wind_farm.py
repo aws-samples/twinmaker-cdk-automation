@@ -8,14 +8,14 @@ from ngsildclient.utils.urn import Urn
 
 
 class TwinMakerObject:
-    def __init__(self, description: dict,parent=None) -> None:
+    def __init__(self, description: dict, parent=None) -> None:
         self.items = []
-        self.parent = parent  
-        self.model = None      
+        self.parent = parent
+        self.model = None
 
-        self._name = description['name'] if 'name' in description else None
-        self._id = description['id'] if 'id' in description else None
-    
+        self._name = description["name"] if "name" in description else None
+        self._id = description["id"] if "id" in description else None
+
     def visit(self, visitor):
         visitor.accept(self)
 
@@ -44,25 +44,23 @@ class TwinMakerRoot(TwinMakerObject):
         super().__init__(description)
         self._description = description
 
-        
-
-        if 'items' in description:
-            for item in description['items']:
+        if "items" in description:
+            for item in description["items"]:
                 self.items.append(self.build_item(item, self))
 
-    def build_item(self, item_description: dict, parent=None)->TwinMakerObject:
-        if not 'type' in item_description:
+    def build_item(self, item_description: dict, parent=None) -> TwinMakerObject:
+        if "type" not in item_description:
             raise Exception("No type defined for item")
 
-        type = item_description['type']
+        type = item_description["type"]
         item = None
 
         if type in globals():
             klass = globals()[type]
             item = klass(item_description, parent=parent)
-            
+
         if "items" in item_description:
-            for sub_item in item_description['items']:
+            for sub_item in item_description["items"]:
                 item.items.append(self.build_item(sub_item, parent=item))
 
         if item:
@@ -70,7 +68,7 @@ class TwinMakerRoot(TwinMakerObject):
         else:
             raise Exception("Item type not found")
 
-    def load_from_yaml(description_file_path: str, klass):    
+    def load_from_yaml(description_file_path: str, klass):
         if not path.exists(description_file_path):
             raise Exception(
                 f"Path for site description not found: {description_file_path}"
@@ -81,25 +79,23 @@ class TwinMakerRoot(TwinMakerObject):
             return klass(description)
 
 
-
 class WindFarm(TwinMakerRoot):
     pass
 
+
 class TurbineGroup(TwinMakerObject):
     def __init__(self, description: dict, parent=None) -> None:
-        super().__init__(description,parent=parent)
+        super().__init__(description, parent=parent)
 
-        self.shape = description['shape'] if 'shape' in description else None
-        self.width = description['width'] if 'width' in description else None
-        self.diameter = description['diameter'] if 'diameter' in description else None
-
-
+        self.shape = description["shape"] if "shape" in description else None
+        self.width = description["width"] if "width" in description else None
+        self.diameter = description["diameter"] if "diameter" in description else None
 
 
 class Turbine(TwinMakerObject):
     def __init__(self, description: dict, parent=None) -> None:
-        super().__init__(description,parent=parent)
+        super().__init__(description, parent=parent)
 
-        self.device_code = description['device_code'] if 'device_code' in description else None
-
-        
+        self.device_code = (
+            description["device_code"] if "device_code" in description else None
+        )

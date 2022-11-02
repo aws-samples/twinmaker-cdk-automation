@@ -13,24 +13,22 @@ from wind_farm.visitors import WindFarmSceneVisitor
 from .dummy_stack import DummyStack
 import json
 
+
 @pytest.fixture()
 def scene() -> str:
-    farm = TwinMakerRoot.load_from_yaml("tests/unit/farm.yaml", WindFarm)        
-    
+    farm = TwinMakerRoot.load_from_yaml("tests/unit/farm.yaml", WindFarm)
+
     visitor = WindFarmSceneVisitor(
-        s3_bucket_name="test_bucket",
-        base_file="tests/unit/base.json"
+        s3_bucket_name="test_bucket", base_file="tests/unit/base.json"
     )
 
     farm.visit(visitor)
 
     return json.loads(visitor.get_content())
 
-    
-
 
 def test_root(scene):
-    
+
     assert "nodes" in scene
     assert len(scene["nodes"]) == 3
 
@@ -44,5 +42,3 @@ def test_root(scene):
     assert windfarm["transform"]["position"] == [0, 0, 0]
     assert windfarm["transform"]["rotation"] == [0, 0, 0]
     assert windfarm["transform"]["scale"] == [1, 1, 1]
-
-    

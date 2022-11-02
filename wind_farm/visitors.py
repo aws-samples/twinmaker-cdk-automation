@@ -4,8 +4,8 @@
 from typing import Mapping
 from aws_cdk import aws_iottwinmaker as twinmaker
 
-from .wind_farm import *
-from .scene import *
+from .wind_farm import TwinMakerObject, WindFarm
+from .scene import SceneNode, JSONEncoder
 
 from constructs import Construct
 import json
@@ -22,8 +22,6 @@ class TwinMakerCDKVisitor(Construct):
 
     def accept(self, entity: TwinMakerObject):
         pass
-
-    
 
 
 class WindFarmCDKVisitor(TwinMakerCDKVisitor):
@@ -42,11 +40,12 @@ class WindFarmCDKVisitor(TwinMakerCDKVisitor):
             components={},
         )
 
+
 class WindFarmSceneVisitor:
     def __init__(self, s3_bucket_name, base_file: str = "base.json") -> None:
-        
+
         self.s3_bucket_name = s3_bucket_name
-        
+
         # Initialize content JSON
         with open(base_file) as file:
             self.content = json.load(file)
@@ -61,7 +60,7 @@ class WindFarmSceneVisitor:
         node = SceneNode(self, entity.name, model=entity.model)
         self.entity_index[entity.urn.fqn] = (entity, node)
         self.add_node(node)
-    
+
         if WindFarm == type(entity):
             self.on_wind_farm(entity)
 
@@ -70,5 +69,3 @@ class WindFarmSceneVisitor:
 
     def on_wind_farm(self, farm: WindFarm):
         pass
-
-    

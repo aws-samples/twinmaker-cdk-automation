@@ -8,6 +8,7 @@ from constructs import Construct
 from wind_farm.wind_farm import WindFarm, TwinMakerRoot
 from wind_farm.visitors import WindFarmCDKVisitor
 
+
 class DummyStack(Stack):
     """This is a dummy twinmaker stack that just provision a StefSite"""
 
@@ -28,10 +29,8 @@ class DummyStack(Stack):
             role="arn:dummy",
             s3_location=twinmaker_bucket.bucket_arn,
         )
-        
-        
-        farm = TwinMakerRoot.load_from_yaml(filename, WindFarm)        
+
+        farm = TwinMakerRoot.load_from_yaml(filename, WindFarm)
 
         visitor = WindFarmCDKVisitor(self, "WindFarm", self.workspace)
         farm.visit(visitor)
-
