@@ -20,7 +20,12 @@ class TwinMakerObject:
         visitor.accept(self)
 
         for item in self.items:
-            visitor.accept(item)
+            item.visit(visitor)
+            # visitor.accept(item)
+
+    def read_props(self, description: dict, fields):
+        for field in fields:
+            self.__dict__[field] = description[field] if field in description else None
 
     @property
     def urn(self):
@@ -86,16 +91,10 @@ class WindFarm(TwinMakerRoot):
 class TurbineGroup(TwinMakerObject):
     def __init__(self, description: dict, parent=None) -> None:
         super().__init__(description, parent=parent)
-
-        self.shape = description["shape"] if "shape" in description else None
-        self.width = description["width"] if "width" in description else None
-        self.diameter = description["diameter"] if "diameter" in description else None
+        self.read_props(description, ["shape", "width", "diameter"])
 
 
 class Turbine(TwinMakerObject):
     def __init__(self, description: dict, parent=None) -> None:
         super().__init__(description, parent=parent)
-
-        self.device_code = (
-            description["device_code"] if "device_code" in description else None
-        )
+        self.read_props(description, ["device_code"])

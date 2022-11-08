@@ -30,3 +30,31 @@ def test_root(stack):
             "Components": {},
         },
     )
+
+
+def test_turbine_group(stack):
+    template = assertions.Template.from_stack(stack)
+
+    template.has_resource_properties(
+        "AWS::IoTTwinMaker::Entity",
+        {
+            "EntityName": "group1",
+            "EntityId": "urn:ngsi-ld:TurbineGroup:group1",
+            "ParentEntityId": "urn:ngsi-ld:WindFarm:ACMEWindFarm",
+            "Components": {},
+        },
+    )
+
+
+def test_turbine(stack):
+    template = assertions.Template.from_stack(stack)
+
+    template.has_resource_properties(
+        "AWS::IoTTwinMaker::Entity",
+        {
+            "EntityName": "turbine_rect_1",
+            "EntityId": "urn:ngsi-ld:Turbine:turbine_rect_1",
+            "ParentEntityId": "urn:ngsi-ld:TurbineGroup:group1",
+            "Components": {},
+        },
+    )
