@@ -3,6 +3,7 @@
 
 import json
 
+
 # extend the json.JSONEncoder class
 class JSONEncoder(json.JSONEncoder):
     # overload method default
