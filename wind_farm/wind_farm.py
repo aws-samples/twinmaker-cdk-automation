@@ -1,8 +1,6 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. 2021
 # SPDX-License-Identifier: Apache-2.0
 
-import yaml
-from os import path
 
 from scale_twinmaker import TwinMakerRoot, TwinMakerObject
 

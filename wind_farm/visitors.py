@@ -3,12 +3,10 @@
 
 from aws_cdk import aws_iottwinmaker as twinmaker
 
-from .wind_farm import WindFarm, TurbineGroup, Turbine
 from scale_twinmaker.scene import SceneNode
-
-from constructs import Construct
-
 from scale_twinmaker import TwinMakerCDKVisitor, SceneVisitor
+
+from .wind_farm import WindFarm, TurbineGroup, Turbine
 
 
 class WindFarmCDKVisitor(TwinMakerCDKVisitor):
