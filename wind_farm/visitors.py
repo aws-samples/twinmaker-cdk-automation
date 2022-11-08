@@ -9,6 +9,7 @@ from .scene import SceneNode, JSONEncoder
 
 from constructs import Construct
 import json
+import re
 
 
 class TwinMakerCDKVisitor(Construct):
@@ -25,13 +26,18 @@ class TwinMakerCDKVisitor(Construct):
 
 
 class WindFarmCDKVisitor(TwinMakerCDKVisitor):
+    def to_snake_case(name):
+        name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
+        name = re.sub("__([A-Z])", r"_\1", name)
+        name = re.sub("([a-z0-9])([A-Z])", r"\1_\2", name)
+        return name.lower()
+
     def accept(self, entity: TwinMakerObject):
-        if WindFarm == type(entity):
-            self.on_wind_farm(entity)
-        elif TurbineGroup == type(entity):
-            self.on_turbine_group(entity)
-        elif Turbine == type(entity):
-            self.on_turbine(entity)
+        klass = type(entity).__name__
+        method_name = f"on_{WindFarmCDKVisitor.to_snake_case(klass)}"
+        method = getattr(self, method_name, None)
+        if callable(method):
+            method(entity)
 
     def on_wind_farm(self, farm: WindFarm):
         return twinmaker.CfnEntity(
@@ -87,12 +93,11 @@ class WindFarmSceneVisitor:
         self.entity_index[entity.urn.fqn] = (entity, node)
         self.add_node(node)
 
-        if WindFarm == type(entity):
-            self.on_wind_farm(entity, node)
-        elif TurbineGroup == type(entity):
-            self.on_turbine_group(entity, node)
-        elif Turbine == type(entity):
-            self.on_wind_turbine(entity, node)
+        klass = type(entity).__name__
+        method_name = f"on_{WindFarmCDKVisitor.to_snake_case(klass)}"
+        method = getattr(self, method_name, None)
+        if callable(method):
+            method(entity, node)
 
         # To handle hierarchy of nodes
         entity_index = self.content["nodes"].index(node)
