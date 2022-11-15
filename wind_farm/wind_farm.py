@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
-from scale_twinmaker import TwinMakerRoot, TwinMakerObject
+from twinmaker_builder import TwinMakerRoot, TwinMakerObject
 
 
 class WindFarm(TwinMakerRoot):
