@@ -9,7 +9,7 @@ import sys
 dir_path = path.dirname(path.realpath(__file__))
 sys.path.insert(0, "wind_farm/random_component/udq_helper_utils")
 
-from wind_farm.random_component.lambda_.handler import lambda_handler  # noqa: E402
+from wind_farm.random_component.lambda_code.handler import lambda_handler  # noqa: E402
 
 
 @pytest.fixture()

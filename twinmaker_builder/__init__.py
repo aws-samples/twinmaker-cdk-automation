@@ -18,13 +18,16 @@ from .scene import SceneNode, JSONEncoder
 
 
 class TwinMakerObject:
-    def __init__(self, description: dict, parent=None) -> None:
+    def __init__(self, description: dict, parent=None, fields=None) -> None:
         self.items = []
         self.parent = parent
 
         self.model = description["model"] if "model" in description else None
         self._name = description["name"] if "name" in description else None
         self._id = description["id"] if "id" in description else None
+
+        if fields:
+            self.read_props(description, fields)
 
     def visit(self, visitor):
         visitor.accept(self)
@@ -126,14 +129,14 @@ class TwinMakerCDKVisitor(Construct):
         if callable(method):
             twinmaker_entity = method(entity)
 
-        # Index entities by their entity_id to be able to reference them when
-        # creating the dependency
-        self._index_entities[twinmaker_entity.entity_id] = twinmaker_entity
+            # Index entities by their entity_id to be able to reference them when
+            # creating the dependency
+            self._index_entities[twinmaker_entity.entity_id] = twinmaker_entity
 
-        # If entity has a parent, add the dependency
-        if twinmaker_entity.parent_entity_id:
-            parent = self._index_entities[twinmaker_entity.parent_entity_id]
-            twinmaker_entity.node.add_dependency(parent)
+            # If entity has a parent, add the dependency
+            if twinmaker_entity.parent_entity_id:
+                parent = self._index_entities[twinmaker_entity.parent_entity_id]
+                twinmaker_entity.node.add_dependency(parent)
 
 
 class SceneVisitor:

@@ -14,6 +14,8 @@ def test_can_read_farm_file(farm):
     assert farm.name == "ACME WindFarm"
     assert len(farm.items) == 2
 
+    assert farm.urn.fqn == "urn:ngsi-ld:WindFarm:ACMEWindFarm"
+
 
 def test_farm_has_turbine_groups(farm):
     group = farm.items[0]
@@ -21,6 +23,8 @@ def test_farm_has_turbine_groups(farm):
     assert group.shape == "rectangle"
     assert group.width == 2
     assert group.model is not None
+
+    assert group.urn.fqn == "urn:ngsi-ld:TurbineGroup:group1"
 
 
 def test_turbinegroup_has_parent(farm):

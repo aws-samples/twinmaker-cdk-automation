@@ -70,7 +70,7 @@ class RandomTwinMakerComponent(Construct):
             self,
             "RandomComponentLambda",
             function_name=RandomTwinMakerComponent.lambda_name(),
-            entry=path.join(dir_path, "lambda_"),
+            entry=path.join(dir_path, "lambda_code"),
             layers=[
                 PythonLayerVersion(
                     self,

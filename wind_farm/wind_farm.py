@@ -11,11 +11,11 @@ class WindFarm(TwinMakerRoot):
 
 class TurbineGroup(TwinMakerObject):
     def __init__(self, description: dict, parent=None) -> None:
-        super().__init__(description, parent=parent)
-        self.read_props(description, ["shape", "width", "diameter"])
+        super().__init__(
+            description, parent=parent, fields=["shape", "width", "diameter"]
+        )
 
 
 class Turbine(TwinMakerObject):
     def __init__(self, description: dict, parent=None) -> None:
-        super().__init__(description, parent=parent)
-        self.read_props(description, ["device_code"])
+        super().__init__(description, parent=parent, fields=["device_code"])
