@@ -1,0 +1,33 @@
+{
+  "specVersion": "1.0",
+  "version": "1",
+  "unit": "meters",
+  "properties": {
+    "environmentPreset": "neutral"
+  },
+  "nodes": [],
+  "rootNodeIndexes": [],
+  "cameras": [],
+  "rules": {
+    "turbineColorRule": {
+      "statements": [
+        {
+          "expression": "speed <= 10",
+          "target": "iottwinmaker.common.color:#0144f9"
+        },
+        {
+          "expression": "speed <= 30",
+          "target": "iottwinmaker.common.color:#73fd06"
+        },
+        {
+          "expression": "speed <= 80",
+          "target": "iottwinmaker.common.color:#fde206"
+        },
+        {
+          "expression": "speed > 80",
+          "target": "iottwinmaker.common.color:#d13212"
+        }
+      ]
+    }
+  }
+}

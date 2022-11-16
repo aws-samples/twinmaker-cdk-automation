@@ -21,8 +21,8 @@ class TwinMakerObject:
     def __init__(self, description: dict, parent=None) -> None:
         self.items = []
         self.parent = parent
-        self.model = None
 
+        self.model = description["model"] if "model" in description else None
         self._name = description["name"] if "name" in description else None
         self._id = description["id"] if "id" in description else None
 
@@ -36,6 +36,10 @@ class TwinMakerObject:
     def read_props(self, description: dict, fields):
         for field in fields:
             self.__dict__[field] = description[field] if field in description else None
+
+    @property
+    def index(self):
+        return self.parent.items.index(self) if self.parent else 0
 
     @property
     def urn(self):
@@ -107,6 +111,8 @@ class TwinMakerCDKVisitor(Construct):
         self._workspace = workspace
         self._index_entities: Mapping[str, twinmaker.CfnEntity] = {}
 
+        self.node.add_dependency(workspace)
+
     def to_snake_case(name):
         name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
         name = re.sub("__([A-Z])", r"_\1", name)
@@ -118,7 +124,16 @@ class TwinMakerCDKVisitor(Construct):
         method_name = f"on_{TwinMakerCDKVisitor.to_snake_case(klass)}"
         method = getattr(self, method_name, None)
         if callable(method):
-            method(entity)
+            twinmaker_entity = method(entity)
+
+        # Index entities by their entity_id to be able to reference them when
+        # creating the dependency
+        self._index_entities[twinmaker_entity.entity_id] = twinmaker_entity
+
+        # If entity has a parent, add the dependency
+        if twinmaker_entity.parent_entity_id:
+            parent = self._index_entities[twinmaker_entity.parent_entity_id]
+            twinmaker_entity.node.add_dependency(parent)
 
 
 class SceneVisitor:
@@ -158,3 +173,10 @@ class SceneVisitor:
 
     def get_content(self):
         return JSONEncoder().encode(self.content)
+
+    def get_entity_path(self, entity: TwinMakerObject) -> str:
+        """Return the path of of an entity in the hierarchy"""
+        if entity.parent:
+            return self.get_entity_path(entity.parent) + "/" + entity.name
+        else:
+            return entity.name

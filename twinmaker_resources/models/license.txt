@@ -1,0 +1,11 @@
+Model Information:
+* title:	Animated Wind Turbine
+* source:	https://sketchfab.com/3d-models/animated-wind-turbine-e0678e6615a74ed29c1376a591262159
+* author:	Glowbox 3D (https://sketchfab.com/ra3id)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Animated Wind Turbine" (https://sketchfab.com/3d-models/animated-wind-turbine-e0678e6615a74ed29c1376a591262159) by Glowbox 3D (https://sketchfab.com/ra3id) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

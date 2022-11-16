@@ -63,7 +63,7 @@ def test_turbine_group(scene):
     assert "position" in turbine_group["transform"]
     assert "rotation" in turbine_group["transform"]
     assert "scale" in turbine_group["transform"]
-    assert turbine_group["transform"]["position"] == [0, 0, 0]
+    assert turbine_group["transform"]["position"] == [0, 0, 15]
     assert turbine_group["transform"]["rotation"] == [0, 0, 0]
     assert turbine_group["transform"]["scale"] == [1, 1, 1]
 
@@ -82,4 +82,28 @@ def test_turbine(scene):
     assert turbine["transform"]["rotation"] == [0, 0, 0]
     assert turbine["transform"]["scale"] == [1, 1, 1]
 
+    assert "components" in turbine
+    assert len(turbine["components"]) == 2
+    assert (
+        turbine["components"][0]["uri"]
+        == "s3://test_bucket/models/animated_wind_turbine.glb"
+    )
+
     assert len(turbine["children"]) == 0
+
+    # The second turbine in the group shoud be automatically shifted
+    turbine = scene["nodes"][3]
+    assert turbine["name"] == "turbine_rect_2"
+    assert turbine["transform"]["position"] == [0, 0, 10]
+    assert turbine["transform"]["scale"] == [1, 1, 1]
+
+    # Verifying model shader
+    model_shader = turbine["components"][1]
+    assert model_shader["type"] == "ModelShader"
+    assert model_shader["ruleBasedMapId"] == "turbineColorRule"
+
+    data_binding_context = model_shader["valueDataBinding"]["dataBindingContext"]
+    assert data_binding_context["entityId"] == "urn:ngsi-ld:Turbine:turbine_rect_2"
+    assert data_binding_context["componentName"] == "TurbineFan"
+    assert data_binding_context["propertyName"] == "speed"
+    assert data_binding_context["entityPath"] == "ACME WindFarm/group1/turbine_rect_2"

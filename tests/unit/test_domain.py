@@ -20,6 +20,7 @@ def test_farm_has_turbine_groups(farm):
     assert type(group) == TurbineGroup
     assert group.shape == "rectangle"
     assert group.width == 2
+    assert group.model is not None
 
 
 def test_turbinegroup_has_parent(farm):
