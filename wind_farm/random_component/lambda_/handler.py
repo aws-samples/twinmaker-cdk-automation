@@ -1,6 +1,6 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. 2021
 # SPDX-License-Identifier: Apache-2.0
-# flake8: noqa
+
 import logging
 from datetime import datetime
 from random import seed
@@ -30,8 +30,8 @@ LOGGER.setLevel(logging.INFO)
 class RandomReader(SingleEntityReader):
     """
     The UDQ Connector implementation for our Timestream table
-    It supports both single-entity queries and multi-entity queries and contains 2 utility functions to read from Timestream
-    and convert the results into a IoTTwinMakerUdqResponse object
+    It supports both single-entity queries and multi-entity queries and contains 2 utility functions to
+    read from Timestream and convert the results into a IoTTwinMakerUdqResponse object
     """
 
     def __init__(self):
@@ -43,8 +43,9 @@ class RandomReader(SingleEntityReader):
     ) -> IoTTwinMakerUdqResponse:
         """
         This is a entityId.componentName.propertyId type query.
-        The entityId and componentName is resolved into the externalId's for this component so we are getting telemetryAssetId and telemetryAssetType passed in
-        We are selecting all entries matching the passed in telemetryAssetType, telemetryAssetId and additional filters
+        The entityId and componentName is resolved into the externalId's for this component so we are getting
+        telemetryAssetId and telemetryAssetType passed in. We are selecting all entries matching the passed in
+        telemetryAssetType, telemetryAssetId and additional filters
         """
         LOGGER.info("RandomReader entity_query")
 
