@@ -22,4 +22,11 @@ def stack() -> DummyStack:
 def test_root(stack):
     template = assertions.Template.from_stack(stack)
 
-    assert template is not None
+    template.has_resource_properties(
+        "AWS::IoTTwinMaker::Entity",
+        {
+            "EntityName": "ACME WindFarm",
+            "EntityId": "urn:ngsi-ld:WindFarm:ACMEWindFarm",
+            "Components": {},
+        },
+    )
