@@ -2,3 +2,26 @@
 # SPDX-License-Identifier: Apache-2.0
 
 name: ACME WindFarm
+city: Seattle
+items:
+- name: group1
+  type: TurbineGroup
+  items:
+  - name: turbine_1
+    type: Turbine
+    device_code: "0x01"
+  - name: turbine_2
+    type: Turbine
+    device_code: "0x02"
+- name: group2
+  type: TurbineGroup
+  items:
+  - name: turbine_3
+    type: Turbine
+    device_code: "0x03"
+  - name: turbine_4
+    type: Turbine
+    device_code: "0x04"
+  - name: turbine_5
+    type: Turbine
+    device_code: "0x05"
