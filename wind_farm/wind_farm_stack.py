@@ -30,7 +30,7 @@ class WindFarmStack(Stack):
 
         workspace_id = "windfarm-sample"
 
-        # The S3 bucket for the TwinMaker resources
+        # 1. Create an S3 bucket for the TwinMaker Workspace
         bucket_name = f"twinmaker-windfarm-{account}-{region}"
         twinmaker_bucket = s3.Bucket(
             self,
@@ -53,6 +53,7 @@ class WindFarmStack(Stack):
             object_ownership=s3.ObjectOwnership.OBJECT_WRITER,
         )
 
+        # 2. Create a role to be used by the TwinMaker Workspace
         lambda_name = RandomTwinMakerComponent.lambda_name()
         twinmaker_role = iam.Role(
             self,
@@ -94,6 +95,7 @@ class WindFarmStack(Stack):
             },
         )
 
+        # 3. Create the Workspace
         workspace = twinmaker.CfnWorkspace(
             self,
             "TwinMakerWorkspace",
@@ -104,20 +106,25 @@ class WindFarmStack(Stack):
         workspace.node.add_dependency(twinmaker_role)
         workspace.node.add_dependency(twinmaker_bucket)
 
+        # 4. Create our custom Random Component
         random_component = RandomTwinMakerComponent(
             self, "RandomComponent", workspace.workspace_id
         )
         random_component.node.add_dependency(workspace)
 
+        # 5. Read the business model
         farm = TwinMakerRoot.load_from_yaml("wind_farm/farm.yaml", WindFarm)
 
+        # 6. Visit the model with the CDKVisitor
         visitor = WindFarmCDKVisitor(self, "WindFarm", workspace)
         farm.visit(visitor)
         visitor.node.add_dependency(random_component)
 
+        # 7. Visit the model wiht the SceneVisitor
         visitor = WindFarmSceneVisitor(bucket_name, "wind_farm/base.json")
         farm.visit(visitor)
 
+        # 8. Upload the scene JSON to the S3 Bucket
         deploy = s3deploy.BucketDeployment(
             self,
             "DeployTwinMakerModels",
@@ -129,6 +136,7 @@ class WindFarmStack(Stack):
             prune=False,
         )
 
+        # 9. Create the scene in the TwinMaker Workspace
         scene = twinmaker.CfnScene(
             self,
             "MainScene",
