@@ -22,7 +22,7 @@ We have two groups of turbine, one that is composed of 2 turbines and the other 
 When looking at the [tests/unit/farm.yaml](../tests/unit/farm.yaml) file, it currently contains pretty much nothing:
 
 ```yaml
-# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. 2021
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. 2022
 # SPDX-License-Identifier: Apache-2.0
 
 name: ACME WindFarm
@@ -64,7 +64,7 @@ def test_can_read_farm_file(farm):
 In order to make that test pass, we need to change our YAML file:
 
 ```yaml
-# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. 2021
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. 2022
 # SPDX-License-Identifier: Apache-2.0
 
 name: ACME WindFarm

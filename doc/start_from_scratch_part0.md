@@ -11,7 +11,7 @@ $ git checkout from-scratch
 You can verify that all went well by looking at the content of `tests/unit/farm.yaml` that should only contain the following :
 
 ```yaml
-# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. 2021
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. 2022
 # SPDX-License-Identifier: Apache-2.0
 
 name: ACME WindFarm
