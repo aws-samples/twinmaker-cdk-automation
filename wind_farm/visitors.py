@@ -60,4 +60,30 @@ class WindFarmCDKVisitor(TwinMakerCDKVisitor):
 
 
 class WindFarmSceneVisitor(SceneVisitor):
-    pass
+    def on_turbine(self, turbine: Turbine, node: SceneNode):
+        # Separating each turbine by 10 meter
+        node.transform.position.z = turbine.index * 10
+
+        # Hard coding the 3D model used
+        node.components.append(
+            {
+                "type": "ModelRef",
+                "uri": f"s3://{self.s3_bucket_name}/models/animated_wind_turbine.glb",
+                "modelType": "GLB",
+                "unitOfMeasure": "millimeters",
+                "castShadow": True,
+                "receiveShadow": True,
+            }
+        )
+
+        # Linking a shader to the entity data
+        node.components.append(
+            ModelShader(
+                entity_id=turbine.urn.fqn,
+                component_name="TurbineFan",
+                property_name="speed",
+                entity_path=self.get_entity_path(turbine),
+                data_frame_label="",
+                rule="turbineColorRule",
+            ).__dict__
+        )
