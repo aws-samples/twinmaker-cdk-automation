@@ -11,10 +11,14 @@ import yaml
 from constructs import Construct
 import json
 import re
+import logging
 
 from ngsildclient.utils.urn import Urn
 
 from .scene import SceneNode, JSONEncoder
+
+LOGGER = logging.getLogger()
+LOGGER.setLevel(logging.INFO)
 
 
 class TwinMakerObject:
@@ -34,7 +38,6 @@ class TwinMakerObject:
 
         for item in self.items:
             item.visit(visitor)
-            # visitor.accept(item)
 
     def read_props(self, description: dict, fields):
         for field in fields:
@@ -73,7 +76,10 @@ class TwinMakerRoot(TwinMakerObject):
 
         if "items" in description:
             for item in description["items"]:
-                self.items.append(self.build_item(item, self))
+                try:
+                    self.items.append(self.build_item(item, self))
+                except Exception as e:
+                    LOGGER.info("Unable to build item: " + str(e))
 
     def build_item(self, item_description: dict, parent=None) -> TwinMakerObject:
         if "type" not in item_description:
@@ -92,7 +98,7 @@ class TwinMakerRoot(TwinMakerObject):
         if item:
             return item
         else:
-            raise Exception("Item type not found")
+            raise Exception(f"Item type not found : {type}")
 
     def load_from_yaml(description_file_path: str, klass):
         if not path.exists(description_file_path):
