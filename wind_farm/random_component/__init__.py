@@ -19,10 +19,12 @@ from os import path
 
 
 class RandomTwinMakerComponent(Construct):
+    """Construct that deploys a component type that generates random values"""
 
     TYPE = "com.aws.sample.component.random"
 
     def lambda_name():
+        # TODO do not hardcode this name
         return "windfarm-sample-random-read"
 
     def __init__(

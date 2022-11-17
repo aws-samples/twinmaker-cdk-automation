@@ -4,8 +4,9 @@
 import json
 
 
-# extend the json.JSONEncoder class
 class JSONEncoder(json.JSONEncoder):
+    """A custom JSON encoder that serialize SceneCoord as arrays"""
+
     # overload method default
     def default(self, obj):
         if isinstance(obj, SceneCoord):
