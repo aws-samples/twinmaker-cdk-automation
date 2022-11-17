@@ -65,8 +65,8 @@ class TwinMakerObject:
 
 
 class TwinMakerRoot(TwinMakerObject):
-    def __init__(self, description: dict) -> None:
-        super().__init__(description)
+    def __init__(self, description: dict, fields=None) -> None:
+        super().__init__(description, fields=fields)
         self._description = description
 
         self.klasses = {}
