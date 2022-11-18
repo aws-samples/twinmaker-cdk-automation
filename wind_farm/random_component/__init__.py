@@ -1,8 +1,6 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from pkgutil import get_loader
-from time import time
 from aws_cdk import (
     aws_lambda as lambda_,
     aws_iottwinmaker as twinmaker,

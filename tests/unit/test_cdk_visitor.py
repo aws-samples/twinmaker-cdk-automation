@@ -3,11 +3,8 @@
 
 import pytest
 
-from os import path
 import aws_cdk as core
 import aws_cdk.assertions as assertions
-
-from aws_cdk.assertions import Annotations, Match
 
 from .dummy_stack import DummyStack
 

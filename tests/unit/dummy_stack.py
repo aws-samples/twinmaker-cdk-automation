@@ -10,7 +10,7 @@ from wind_farm.visitors import WindFarmCDKVisitor
 
 
 class DummyStack(Stack):
-    """This is a dummy twinmaker stack that just provision a StefSite"""
+    """This is a dummy twinmaker stack that just provision a Windfarm"""
 
     def __init__(
         self,

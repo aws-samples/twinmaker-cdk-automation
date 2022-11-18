@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import logging
-from datetime import datetime
 from random import seed
 from random import randint
 import hashlib

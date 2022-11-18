@@ -3,7 +3,7 @@
 
 from aws_cdk import aws_iottwinmaker as twinmaker
 
-from twinmaker_builder.scene import SceneNode, SceneCoord, ModelShader
+from twinmaker_builder.scene import SceneNode, ModelShader
 from twinmaker_builder import TwinMakerCDKVisitor, SceneVisitor
 
 from .wind_farm import WindFarm, TurbineGroup, Turbine
