@@ -11,6 +11,8 @@ from aws_cdk import (
     RemovalPolicy,
 )
 
+from cdk_nag import NagPackSuppression, NagSuppressions
+
 from constructs import Construct
 from os import path, makedirs
 
@@ -146,3 +148,66 @@ class WindFarmStack(Stack):
         )
 
         scene.node.add_dependency(deploy)
+
+        # NAG Suppresions
+
+        # Suppress enforcement rule for S3 bucket
+        NagSuppressions.add_resource_suppressions(
+            twinmaker_bucket,
+            suppressions=[
+                {
+                    "id": "AwsSolutions-S1",
+                    "reason": "We don't want to log access to the TwinMaker storage bucket",
+                }
+            ],
+        )
+
+        NagSuppressions.add_resource_suppressions_by_path(
+            self,
+            path=f"{Stack.of(self).stack_name}/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C",
+            suppressions=[
+                {
+                    "id": "AwsSolutions-IAM4",
+                    "reason": "Usage of external lib to deploy files to S3",
+                },
+                {
+                    "id": "AwsSolutions-IAM5",
+                    "reason": "Usage of external lib to deploy files to S3",
+                },
+                {
+                    "id": "AwsSolutions-L1",
+                    "reason": "Usage of external lib to deploy files to S3",
+                },
+            ],
+            apply_to_children=True,
+        )
+
+        NagSuppressions.add_resource_suppressions_by_path(
+            self,
+            path=f"{Stack.of(self).stack_name}/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a",
+            suppressions=[
+                {
+                    "id": "AwsSolutions-IAM4",
+                    "reason": "Usage of external to handle log retention (cf aws_lambda_python_alpha)",
+                },
+                {
+                    "id": "AwsSolutions-IAM5",
+                    "reason": "Usage of external to handle log retention (cf aws_lambda_python_alpha)",
+                },
+            ],
+            apply_to_children=True,
+        )
+
+        NagSuppressions.add_resource_suppressions(
+            twinmaker_role,
+            suppressions=[
+                NagPackSuppression(
+                    id="AwsSolutions-IAM5",
+                    reason="S3 IAM policy requires wildcard to match all contained objects.",
+                    applies_to=[
+                        "Action::s3:GetBucket*",
+                        {"regex": "/Resource::(.*)\\/*/g"},
+                    ],
+                )
+            ],
+        )

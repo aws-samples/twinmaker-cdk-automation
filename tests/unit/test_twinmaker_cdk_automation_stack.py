@@ -2,21 +2,21 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import aws_cdk as core
-import aws_cdk.assertions as assertions
+from aws_cdk.assertions import Match, Annotations
+
+from cdk_nag import AwsSolutionsChecks
+from aws_cdk import Aspects
 
 from wind_farm.wind_farm_stack import WindFarmStack
 
 
-# example tests. To run these tests, uncomment this file along with the example
-# resource in twinmaker_cdk_automation/twinmaker_cdk_automation_stack.py
-def test_sqs_queue_created():
+def test_nag_has_no_error():
     app = core.App()
+    Aspects.of(app).add(AwsSolutionsChecks(verbose=True))
     stack = WindFarmStack(app, "twinmaker-cdk-automation")
-    template = assertions.Template.from_stack(stack)
 
-    assert template is not None
+    errors = Annotations.from_stack(stack).find_error(
+        "*", Match.string_like_regexp("AwsSolutions-.*")
+    )
 
-
-#     template.has_resource_properties("AWS::SQS::Queue", {
-#         "VisibilityTimeout": 300
-#     })
+    assert len(errors) == 0

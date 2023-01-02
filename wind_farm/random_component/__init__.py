@@ -10,6 +10,7 @@ from aws_cdk import (
     Stack,
 )
 
+from cdk_nag import NagPackSuppression, NagSuppressions
 
 from aws_cdk.aws_lambda_python_alpha import PythonFunction, PythonLayerVersion
 from constructs import Construct
@@ -63,6 +64,19 @@ class RandomTwinMakerComponent(Construct):
                     ]
                 )
             },
+        )
+
+        NagSuppressions.add_resource_suppressions(
+            lambda_role,
+            suppressions=[
+                NagPackSuppression(
+                    id="AwsSolutions-IAM5",
+                    reason="Lambda role policy requires wildcard to match all log objects.",
+                    applies_to=[
+                        {"regex": "/Resource::(.*)\\/*/g"},
+                    ],
+                )
+            ],
         )
 
         dir_path = path.dirname(path.realpath(__file__))
