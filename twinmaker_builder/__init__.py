@@ -172,7 +172,7 @@ class TwinMakerRoot(TwinMakerObject):
             )
 
         with open(description_file_path) as file:
-            description = yaml.load(file, Loader=yaml.FullLoader)
+            description = yaml.safe_load(file)
             return klass(description)
 
 

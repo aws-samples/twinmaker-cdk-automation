@@ -17,7 +17,7 @@ and generate the corresponding 3D scene by using CDK automation.
  - [Contributing](#contributing)
  - [License](#license)
 
- 
+
 ## License
 
 This code is distributed under the
@@ -97,7 +97,7 @@ You are responsible for the cost of the AWS services used while running this sam
 
 This is a regular CDK repository, so running the following recipe :
 
-```
+```bash
 $ python3 -m venv .venv
 $ . ./.venv/bin/activate
 $ pip install -r requirements.txt
@@ -137,7 +137,56 @@ The `random_component` module contains the implementation of a TwinMaker compone
 
 ### Tests
 
-Unit tests are provided to verify everything is still working. It is a great source to understand how everything works.
+Unit tests are provided to verify everything is still working. It is a great source to understand how everything works. You can run the whole test suite with PyTest: 
+
+```bash
+$ pytest --cov=. tests
+............                                                                                                                                                                        [100%]
+
+---------- coverage: platform darwin, python 3.10.0-final-0 ----------
+Name                                                                  Stmts   Miss  Cover
+-----------------------------------------------------------------------------------------
+app.py                                                                    8      8     0%
+tests/__init__.py                                                         0      0   100%
+tests/unit/__init__.py                                                    0      0   100%
+tests/unit/dummy_stack.py                                                13      0   100%
+tests/unit/test_cdk_visitor.py                                           18      0   100%
+tests/unit/test_domain.py                                                26      0   100%
+tests/unit/test_random_lambda.py                                         19      0   100%
+tests/unit/test_scene_visitor.py                                         65      0   100%
+tests/unit/test_twinmaker_cdk_automation_stack.py                        11      0   100%
+twinmaker_builder/__init__.py                                           127      6    95%
+twinmaker_builder/scene.py                                               50      4    92%
+wind_farm/__init__.py                                                     0      0   100%
+wind_farm/random_component/__init__.py                                   19      0   100%
+wind_farm/random_component/lambda_code/handler.py                        43      0   100%
+wind_farm/random_component/udq_helper_utils/udq_utils/__init__.py         0      0   100%
+wind_farm/random_component/udq_helper_utils/udq_utils/udq.py             38      8    79%
+wind_farm/random_component/udq_helper_utils/udq_utils/udq_models.py     175     42    76%
+wind_farm/visitors.py                                                    21      0   100%
+wind_farm/wind_farm.py                                                   10      0   100%
+wind_farm/wind_farm_stack.py                                             35      0   100%
+-----------------------------------------------------------------------------------------
+TOTAL                                                                   678     68    90%
+
+12 passed in 19.13s
+```
+
+## Commit hooks
+
+This repo is configured for using `pre-commit` hooks. To install them run the following:
+
+```bash
+$ cd twinmaker-cdk-automation
+twinmaker-cdk-automation$ pre-commit install --hook-type pre-commit
+```
+
+Two hooks are configured:
+
+ - [Black](https://github.com/psf/black): formats code
+ - [flake8](https://flake8.pycqa.org/en/latest/): does some code checking
+
+When you commit, those tools run their check and prevent you from committing if they fail. This was configured following that blog post: [Precommits using black and flake8](https://ljvmiranda921.github.io/notebook/2018/06/21/precommits-using-black-and-flake8/)
 
 
 ## Contributing
