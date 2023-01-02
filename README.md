@@ -3,6 +3,27 @@
 This sample project shows a pattern on how to dynamically create entities in Twinmaker
 and generate the corresponding 3D scene by using CDK automation.
 
+## Index
+
+ - [Introduction](#introduction)
+ - [Domain Model](#domain-model)
+ - [Usage](#usage)
+ - [Start From Scratch](#start-from-scratch)
+ - [Repository content](#repository-content)
+  - [Domain model reader](#a-domain-model-reader)
+  - [Two Visitor Base Classes](#two-visitor-base-classes)
+  - [Random Component Type](#a-random-component-type)
+  - [Tests](#tests)
+ - [Contributing](#contributing)
+ - [License](#license)
+
+ 
+## License
+
+This code is distributed under the
+[Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0),
+see LICENSE.txt and NOTICE.txt for more information.
+
 ## Introduction
 
 When using TwinMaker and generating digital twins of real objects, it can quickly become
@@ -70,9 +91,9 @@ items:
 
 This definition file doesn't mention any AWS construction and anybody who can read YAML will be able to understand and make changes to it.
 
-## What's included ?
+## Usage
 
-### Complete CDK Twinmaker Deployment
+You are responsible for the cost of the AWS services used while running this sample deployment. There is no additional cost for using this sample. For full details, see the pricing pages for each AWS service you will be using in this sample. Prices are subject to change.
 
 This is a regular CDK repository, so running the following recipe :
 
@@ -84,6 +105,12 @@ $ cdk deploy
 ```
 
 will deploy the complete TwinMaker project.
+
+## Start from scratch
+
+This repository is a sample deploying a farm of windturbines. If you want to reuse this repository, a [start from scratch documentation](doc/start_from_scratch.md) can help you building you own model and visitors.
+
+## Repository content
 
 ### A Domain Model Reader
 
@@ -110,6 +137,14 @@ The `random_component` module contains the implementation of a TwinMaker compone
 
 ### Tests
 
-Unit tests are provided to verify everything is still working. It is a great source to understand how everything work.
+Unit tests are provided to verify everything is still working. It is a great source to understand how everything works.
 
 
+## Contributing
+We welcome community contributions and pull requests. See [CONTRIBUTING.md](CONTRIBUTING.md) for information on how to set up a development environment and submit code.
+
+## License
+
+This code is distributed under the
+[Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0),
+see LICENSE.txt and NOTICE.txt for more information.
