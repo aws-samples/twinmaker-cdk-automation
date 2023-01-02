@@ -14,6 +14,7 @@ and generate the corresponding 3D scene by using CDK automation.
   - [Two Visitor Base Classes](#two-visitor-base-classes)
   - [Random Component Type](#a-random-component-type)
   - [Tests](#tests)
+ - [Commit hooks](#commit-hooks)
  - [Contributing](#contributing)
  - [License](#license)
 
