@@ -21,6 +21,9 @@ from wind_farm.wind_farm import WindFarm, TwinMakerRoot
 from wind_farm.visitors import WindFarmCDKVisitor, WindFarmSceneVisitor
 from .random_component import RandomTwinMakerComponent
 
+# For security reason S3 logging is enabled by default
+s3_logging = True
+
 
 class WindFarmStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
@@ -32,8 +35,34 @@ class WindFarmStack(Stack):
 
         workspace_id = "windfarm-sample"
 
-        # 1. Create an S3 bucket for the TwinMaker Workspace
         bucket_name = f"twinmaker-windfarm-{account}-{region}"
+
+        logging_bucket = (
+            s3.Bucket(
+                self,
+                "TwinMakerLoggingBucket",
+                bucket_name=f"{bucket_name}-access-log",
+                # Block every public access
+                access_control=s3.BucketAccessControl.LOG_DELIVERY_WRITE,
+                block_public_access=s3.BlockPublicAccess.BLOCK_ALL,
+                public_read_access=False,
+                # Encrypt Data at rest
+                encryption=s3.BucketEncryption.S3_MANAGED,
+                # Encrypt Data in transit
+                enforce_ssl=True,
+                # Enable versioning
+                versioned=True,
+                ## Retain S3 bucket
+                removal_policy=RemovalPolicy.DESTROY,
+                auto_delete_objects=True,
+                # https://docs.aws.amazon.com/AmazonS3/latest/userguide/about-object-ownership.html
+                object_ownership=s3.ObjectOwnership.OBJECT_WRITER,
+            )
+            if s3_logging
+            else None
+        )
+
+        # 1. Create an S3 bucket for the TwinMaker Workspace
         twinmaker_bucket = s3.Bucket(
             self,
             "TwinMakerResources",
@@ -53,6 +82,9 @@ class WindFarmStack(Stack):
             auto_delete_objects=True,
             # https://docs.aws.amazon.com/AmazonS3/latest/userguide/about-object-ownership.html
             object_ownership=s3.ObjectOwnership.OBJECT_WRITER,
+            # Logging
+            server_access_logs_bucket=logging_bucket if s3_logging else None,
+            server_access_logs_prefix="s3-access-logs" if s3_logging else None,
         )
 
         # 2. Create a role to be used by the TwinMaker Workspace
@@ -152,15 +184,26 @@ class WindFarmStack(Stack):
         # NAG Suppresions
 
         # Suppress enforcement rule for S3 bucket
-        NagSuppressions.add_resource_suppressions(
-            twinmaker_bucket,
-            suppressions=[
-                {
-                    "id": "AwsSolutions-S1",
-                    "reason": "We don't want to log access to the TwinMaker storage bucket",
-                }
-            ],
-        )
+        if not s3_logging:
+            NagSuppressions.add_resource_suppressions(
+                twinmaker_bucket,
+                suppressions=[
+                    {
+                        "id": "AwsSolutions-S1",
+                        "reason": "We don't want to log access to the TwinMaker storage bucket",
+                    }
+                ],
+            )
+        else:
+            NagSuppressions.add_resource_suppressions(
+                logging_bucket,
+                suppressions=[
+                    {
+                        "id": "AwsSolutions-S1",
+                        "reason": "We don't want to log access to the logging bucket",
+                    }
+                ],
+            )
 
         NagSuppressions.add_resource_suppressions_by_path(
             self,

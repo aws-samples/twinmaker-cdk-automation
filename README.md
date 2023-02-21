@@ -107,6 +107,8 @@ $ cdk deploy
 
 will deploy the complete TwinMaker project.
 
+> :information_source: This sample deploys a S3 bucket for which logging is enabled by default. As TwinMaker uses the S3 bucket, its usage will be logged in the logging bucket. As [mentionned in the documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/enable-server-access-logging.html), there is no extra-charge for enabling logging on a S3 bucket, however any log files that the system delivers to you will accrue the usual charges for storage. To disable logging on the S3 bucket, you can set the `s3_logging` variable to `False` in [wind_farm_stack.py](./wind_farm/wind_farm_stack.py#L25).
+
 ## Start from scratch
 
 This repository is a sample deploying a farm of windturbines. If you want to reuse this repository, a [start from scratch documentation](doc/start_from_scratch.md) can help you building you own model and visitors.
