@@ -47,6 +47,7 @@ In this sample, we will build a wind farm composed of wind turbines that are pla
 shapes on a field : 
 
 <img src="./doc/windfarm.png"/>
+<em>[Animated Wind Turbine](https://sketchfab.com/3d-models/animated-wind-turbine-e0678e6615a74ed29c1376a591262159) by [Michael Reed](https://sketchfab.com/ra3id) used under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/)</em>
 
 ## Domain Model
 
